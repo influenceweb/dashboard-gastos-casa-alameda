@@ -1,0 +1,582 @@
+<title>Casa Alameda · Gastos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --brand:#2a5c93;
+    --brand-ink:#ffffff;
+    --aqua:#128a72;
+    --header-bg:#0a0f18;
+    --header-bg-2:#132132;
+    --header-accent:#2a5c93;
+    --header-ink:#f5f4f2;
+    --header-ink-muted:#9db0c4;
+    --header-border: rgba(255,255,255,.09);
+
+    --page:#f7f6f3;
+    --surface:#ffffff;
+    --surface-2:#fbfaf8;
+    --ink:#0b0b0c;
+    --ink-secondary:#52514e;
+    --muted:#898781;
+    --border: rgba(11,11,11,.10);
+    --grid:#e5e3de;
+    --shadow: 0 1px 2px rgba(11,11,11,.04), 0 8px 24px -12px rgba(11,11,11,.12);
+
+    --good:#0ca30c;
+    --warning:#c98100;
+    --critical:#d03b3b;
+
+    --cat-labor:#2a78d6;
+    --cat-paint:#eb6834;
+    --cat-elec:#1baf7a;
+    --cat-rubble:#c98500;
+    --cat-finish:#1c7a1c;
+    --cat-security:#4a3aa7;
+    --cat-clean:#e34948;
+    --series-abono:#128a72;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --brand:#6ea3e0;
+      --aqua:#45c7a3;
+      --page:#101012;
+      --surface:#18181b;
+      --surface-2:#1e1e22;
+      --ink:#ffffff;
+      --ink-secondary:#c3c2b7;
+      --muted:#93928c;
+      --border: rgba(255,255,255,.11);
+      --grid:#2c2c30;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      --warning:#e0a020;
+      --cat-labor:#3987e5;
+      --cat-paint:#d95926;
+      --cat-elec:#199e70;
+      --cat-rubble:#c98500;
+      --cat-finish:#2f9e2f;
+      --cat-security:#9085e9;
+      --cat-clean:#e66767;
+      --series-abono:#45c7a3;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --brand:#6ea3e0;
+    --aqua:#45c7a3;
+    --page:#101012;
+    --surface:#18181b;
+    --surface-2:#1e1e22;
+    --ink:#ffffff;
+    --ink-secondary:#c3c2b7;
+    --muted:#93928c;
+    --border: rgba(255,255,255,.11);
+    --grid:#2c2c30;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    --warning:#e0a020;
+    --cat-labor:#3987e5;
+    --cat-paint:#d95926;
+    --cat-elec:#199e70;
+    --cat-rubble:#c98500;
+    --cat-finish:#2f9e2f;
+    --cat-security:#9085e9;
+    --cat-clean:#e66767;
+    --series-abono:#45c7a3;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--page); color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:"Archivo", system-ui, sans-serif;
+    text-wrap: balance;
+    margin:0;
+  }
+  .mono, .num{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  a{color:inherit;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--brand); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+
+  /* ---------- header ---------- */
+  header.top{
+    background: linear-gradient(180deg, var(--header-bg-2), var(--header-bg));
+    border-bottom:1px solid var(--header-border);
+    padding: 18px 28px;
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .brandmark{
+    width:42px; height:42px; border-radius:11px; flex:none;
+    background: linear-gradient(135deg, #3a76b8, #1f3f66);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:"Archivo",sans-serif; font-weight:800; font-size:15px;
+    box-shadow: 0 4px 14px -4px rgba(42,92,147,.6);
+  }
+  .brandtext h1{ color:var(--header-ink); font-size:19px; font-weight:800; letter-spacing:-.01em;}
+  .brandtext .sub{ color:var(--header-ink-muted); font-size:12.5px; margin-top:2px;}
+  header.top .spacer{flex:1 1 auto;}
+  .pill-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 13px; border-radius:9px; font-size:12.5px; font-weight:600;
+    background: rgba(255,255,255,.05); border:1px solid var(--header-border);
+    color:var(--header-ink-muted); text-decoration:none; white-space:nowrap;
+  }
+  .pill:hover{ background: rgba(255,255,255,.09); color:var(--header-ink); }
+  .pill.primary{ background:var(--header-accent); color:#fff; border-color:transparent; }
+  .pill.primary:hover{ filter:brightness(1.08); }
+
+  /* ---------- layout ---------- */
+  main{ max-width:1180px; margin:0 auto; padding:24px 28px 64px; }
+
+  .kpis{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:18px; }
+  @media (max-width:980px){ .kpis{grid-template-columns:repeat(2,1fr);} }
+  .kpi{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:16px 16px 15px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:8px; min-width:0;
+  }
+  .kpi .klabel{ font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .kpi .kvalue{ font-size:22px; font-weight:600; letter-spacing:-.01em; }
+  .kpi .kfoot{ font-size:12px; color:var(--ink-secondary); }
+  .kpi.accent .kvalue{ color:var(--brand); }
+
+  .status-chip{ display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:600; padding:3px 9px 3px 7px; border-radius:99px; }
+  .status-chip.good{ color:var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+  .status-chip.warning{ color:var(--warning); background: color-mix(in srgb, var(--warning) 16%, transparent); }
+  .status-chip.critical{ color:var(--critical); background: color-mix(in srgb, var(--critical) 14%, transparent); }
+  .status-chip .dot{ width:6px; height:6px; border-radius:99px; background:currentColor; }
+
+  /* progress */
+  .progress-card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .progress-card .prow{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .progress-card h2{ font-size:15px; font-weight:700; }
+  .progress-track{ position:relative; height:14px; border-radius:99px; background:var(--grid); overflow:hidden; }
+  .progress-fill{ position:absolute; inset:0 auto 0 0; border-radius:99px; background: var(--brand); }
+  .progress-scale{ display:flex; justify-content:space-between; margin-top:6px; font-size:10.5px; color:var(--muted); }
+  .progress-legend{ display:flex; gap:20px; flex-wrap:wrap; margin-top:14px; }
+  .leg-item{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-secondary); }
+  .leg-swatch{ width:10px; height:10px; border-radius:3px; flex:none; }
+
+  /* tabs */
+  .tabs{ display:flex; gap:6px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+  .tab{
+    appearance:none; border:none; background:none; cursor:pointer;
+    padding:10px 4px; margin-right:18px; font-size:13.5px; font-weight:600; color:var(--muted);
+    border-bottom:2px solid transparent; translate: 0 1px;
+  }
+  .tab:hover{ color:var(--ink-secondary); }
+  .tab[aria-selected="true"]{ color:var(--ink); border-bottom-color:var(--brand); }
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; box-shadow:var(--shadow); }
+  .grid-2{ display:grid; grid-template-columns:1.3fr 1fr; gap:16px; }
+  @media (max-width:900px){ .grid-2{ grid-template-columns:1fr; } }
+  .stack{ display:flex; flex-direction:column; gap:16px; }
+  .card h2{ font-size:15px; font-weight:700; margin-bottom:2px; }
+  .card .cardsub{ font-size:12px; color:var(--muted); margin-bottom:16px; }
+
+  /* bar chart */
+  .barchart{ display:flex; flex-direction:column; gap:12px; }
+  .bar-row{ display:grid; grid-template-columns:74px 1fr auto; align-items:center; gap:10px; }
+  .bar-row .blabel{ font-size:12px; font-weight:600; color:var(--ink-secondary); }
+  .bar-track{ position:relative; height:20px; background:var(--grid); border-radius:5px; overflow:hidden; }
+  .bar-fill{ position:absolute; inset:0 auto 0 0; border-radius:5px; }
+  .bar-val{ font-size:12px; color:var(--ink-secondary); white-space:nowrap; min-width:78px; text-align:right; }
+
+  .weekchart{ display:flex; align-items:flex-end; gap:22px; height:190px; padding-top:8px; border-bottom:1px solid var(--grid); }
+  .weekcol{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
+  .weekcol .bars{ display:flex; align-items:flex-end; gap:7px; height:100%; width:100%; justify-content:center; }
+  .weekcol .b{ width:20px; min-height:2px; border-radius:4px 4px 0 0; position:relative; }
+  .weekcol .b .tip{ position:absolute; top:-17px; left:50%; translate:-50% 0; font-size:10px; color:var(--ink-secondary); white-space:nowrap; font-family:"IBM Plex Mono",monospace;}
+  .weekcol .wlabel{ font-size:11.5px; font-weight:600; color:var(--ink-secondary); margin-top:4px; }
+  .weekcol .wrange{ font-size:10px; color:var(--muted); }
+
+  .chart-legend{ display:flex; gap:18px; margin-top:14px; flex-wrap:wrap; }
+
+  /* week cards */
+  .weekgrid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; }
+  .weekcard{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 17px; box-shadow:var(--shadow); }
+  .weekcard.empty{ opacity:.55; }
+  .weekcard .whead{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+  .weekcard .wtitle{ font-size:14.5px; font-weight:700; }
+  .weekcard .wdate{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .weekcard dl{ margin:0; display:grid; grid-template-columns:1fr auto; gap:6px 8px; font-size:12.5px; }
+  .weekcard dt{ color:var(--muted); }
+  .weekcard dd{ margin:0; font-weight:600; text-align:right; }
+  .weekcard .movlist{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:6px; }
+  .weekcard .mov{ display:flex; justify-content:space-between; gap:10px; font-size:11.5px; }
+  .weekcard .mov .mc{ color:var(--ink-secondary); }
+  .weekcard .mov .mv{ font-weight:600; white-space:nowrap; }
+  .weekcard .mov .mv.abono{ color:var(--aqua); }
+
+  /* filters + table */
+  .filters{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+  .filters input[type="search"]{
+    flex:1 1 220px; padding:10px 13px; border-radius:9px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); font-size:13px;
+  }
+  .filters select{
+    padding:10px 12px; border-radius:9px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink); font-size:13px;
+  }
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  thead th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; padding:0 10px 10px; border-bottom:1px solid var(--border); }
+  tbody td{ padding:10px 10px; border-bottom:1px solid var(--grid); vertical-align:top; }
+  tbody tr:last-child td{ border-bottom:none; }
+  td.amount{ text-align:right; font-weight:600; white-space:nowrap; }
+  td.amount.gasto{ color:var(--ink); }
+  td.amount.abono{ color:var(--aqua); }
+  .table-wrap{ overflow-x:auto; }
+  .chip{ display:inline-block; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; background:var(--grid); color:var(--ink-secondary); }
+
+  .note{ display:flex; gap:11px; padding:14px 16px; border-radius:12px; background: color-mix(in srgb, var(--warning) 12%, var(--surface)); border:1px solid color-mix(in srgb, var(--warning) 35%, transparent); font-size:12.5px; line-height:1.55; color:var(--ink-secondary); }
+  .note strong{ color:var(--ink); }
+  .note .nicon{ flex:none; width:20px; height:20px; border-radius:99px; background:var(--warning); color:#1a1200; font-weight:800; font-size:12px; display:flex; align-items:center; justify-content:center; }
+
+  .prose p{ font-size:13.5px; line-height:1.7; color:var(--ink-secondary); margin:0 0 12px; max-width:66ch; }
+  .prose strong{ color:var(--ink); }
+
+  .rtable{ width:100%; border-collapse:collapse; font-size:13px; margin-top:6px; }
+  .rtable th{ text-align:left; font-size:11px; text-transform:uppercase; color:var(--muted); padding:0 8px 8px; border-bottom:1px solid var(--border); }
+  .rtable td{ padding:9px 8px; border-bottom:1px solid var(--grid); }
+  .rtable td.num{ text-align:right; }
+
+  footer.foot{ max-width:1180px; margin:0 auto; padding:0 28px 40px; color:var(--muted); font-size:11.5px; }
+</style>
+
+<header class="top">
+  <div class="brandmark">D/8</div>
+  <div class="brandtext">
+    <h1>Casa Alameda &middot; Control de gastos</h1>
+    <div class="sub">Cliente: Dr. Luis Cabrera &middot; obra iniciada 21 ago 2026 &middot; fee constructora 15%</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="pill-row">
+    <a class="pill" href="https://docs.google.com/spreadsheets/d/1wTthdaOU0WKtC7KJmPnhN28DYgk8iA-q9ySDDYSitr4/edit?pli=1&gid=1061093183#gid=1061093183" target="_blank" rel="noopener">Google Sheet ↗</a>
+    <span class="pill primary" id="syncPill">Actualizado 8 sep 2026</span>
+  </div>
+</header>
+
+<main>
+
+  <section class="kpis" id="kpiRow"></section>
+
+  <section class="progress-card">
+    <div class="prow">
+      <h2>Avance del presupuesto de obra</h2>
+      <span class="status-chip good" id="budgetChip"><span class="dot"></span>dentro de presupuesto</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-scale"><span>$0</span><span>25%</span><span>50%</span><span>75%</span><span id="scaleMax">$282,808</span></div>
+    <div class="progress-legend">
+      <div class="leg-item"><span class="leg-swatch" style="background:var(--brand)"></span>Gastado + fee constructora</div>
+      <div class="leg-item"><span class="leg-swatch" style="background:var(--grid)"></span>Restante del presupuesto</div>
+    </div>
+  </section>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="resumen">Resumen</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="semanas">Semanas</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="detalle">Detalle</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="reporte">Reporte</button>
+  </nav>
+
+  <section class="panel active" id="panel-resumen">
+    <div class="stack">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Gastos por semana</h2>
+          <div class="cardsub">Gasto de obra vs. abonos recibidos del cliente</div>
+          <div class="weekchart" id="weekChart"></div>
+          <div class="chart-legend">
+            <div class="leg-item"><span class="leg-swatch" style="background:var(--cat-labor)"></span>Gasto de obra</div>
+            <div class="leg-item"><span class="leg-swatch" style="background:var(--series-abono)"></span>Abono del cliente</div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Gasto por categoría</h2>
+          <div class="cardsub">Acumulado a la fecha, $47,391 en 3 semanas</div>
+          <div class="barchart" id="catChart"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-semanas">
+    <div class="weekgrid" id="weekCards"></div>
+  </section>
+
+  <section class="panel" id="panel-detalle">
+    <div class="filters">
+      <input type="search" id="fSearch" placeholder="Buscar por concepto…">
+      <select id="fWeek"><option value="">Todas las semanas</option></select>
+      <select id="fTipo">
+        <option value="">Gastos y abonos</option>
+        <option value="gasto">Solo gastos</option>
+        <option value="abono">Solo abonos</option>
+      </select>
+      <select id="fCat"><option value="">Todas las categorías</option></select>
+    </div>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fecha</th><th>Semana</th><th>Concepto</th><th>Categoría</th><th>Tipo</th><th style="text-align:right">Monto</th></tr></thead>
+          <tbody id="detailBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-reporte">
+    <div class="stack">
+      <div class="card">
+        <h2>Gasto por categoría</h2>
+        <div class="cardsub">% sobre el gasto de obra acumulado ($47,391)</div>
+        <div class="table-wrap">
+          <table class="rtable">
+            <thead><tr><th>Categoría</th><th class="num">Monto</th><th class="num">% del gasto</th></tr></thead>
+            <tbody id="repCatBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card prose">
+        <h2 style="margin-bottom:10px;">Metodología</h2>
+        <p>Los totales de este dashboard se calculan sumando directamente cada movimiento registrado en el detalle semana a semana del sheet. El fee de constructora se calcula como 15% sobre el gasto de obra de cada semana. El presupuesto de $282,808 se compara contra gasto de obra + fee.</p>
+        <p>Esta es una vista fija de los datos, actualizada manualmente. Para refrescarla con los movimientos más recientes del Google Sheet, pide la actualización en el chat de Claude.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">D8 Constructivo · Casa Alameda · Datos tomados de Google Sheets · Última sincronización: 8 sep 2026</footer>
+
+<script>
+const DATA = {
+  budget: 282808,
+  feePct: 0.15,
+  updated: "8 sep 2026",
+  weeks: [
+    { n:1, label:"Semana 01", range:"21–30 ago", status:"cerrada",
+      movs:[
+        ["2026-08-21","Varillas para reforzar ventanas, focos y tablero 4 espacios eléctrico","gasto",3450,"Eléctrico"],
+        ["2026-08-22","Mano de obra","gasto",4000,"Mano de obra"],
+        ["2026-08-22","Cámaras para vigilar","gasto",1098,"Seguridad"],
+        ["2026-08-24","Yeso y mortero para resanar muros","gasto",210,"Acabados"],
+        ["2026-08-25","Retiro de escombro","gasto",900,"Escombro"],
+        ["2026-08-25","Estuco para resanar muros exteriores","gasto",500,"Acabados"],
+        ["2026-08-28","Pintura vinílica exterior","gasto",3900,"Pintura"],
+        ["2026-08-29","Mano de obra","gasto",10800,"Mano de obra"],
+        ["2026-08-29","Retiro de escombro","gasto",900,"Escombro"],
+        ["2026-08-30","Abono 01","abono",25820,"Abono cliente"]
+      ]},
+    { n:2, label:"Semana 02", range:"31 ago–5 sep", status:"cerrada",
+      movs:[
+        ["2026-08-31","Pintura vinílica interior","gasto",1270,"Pintura"],
+        ["2026-09-01","Pintura vinílica interior y galón esmalte negro, thinner","gasto",1815,"Pintura"],
+        ["2026-09-01","Productos de limpieza","gasto",435,"Limpieza"],
+        ["2026-09-02","Cable eléctrico para instalar focos en exterior","gasto",3000,"Eléctrico"],
+        ["2026-09-03","2 cubetas pintura vinílica interior","gasto",2550,"Pintura"],
+        ["2026-09-05","Mano de obra","gasto",12100,"Mano de obra"],
+        ["2026-09-02","Abono 02","abono",24500,"Abono cliente"]
+      ]},
+    { n:3, label:"Semana 03", range:"desde 7 sep", status:"en curso",
+      movs:[
+        ["2026-09-07","Candados de seguridad para puertas","gasto",463,"Seguridad"]
+      ]},
+    { n:4, label:"Semana 04", range:"por iniciar", status:"vacia", movs:[] }
+  ]
+};
+
+const CAT_COLOR = {
+  "Mano de obra":"var(--cat-labor)",
+  "Pintura":"var(--cat-paint)",
+  "Eléctrico":"var(--cat-elec)",
+  "Escombro":"var(--cat-rubble)",
+  "Acabados":"var(--cat-finish)",
+  "Seguridad":"var(--cat-security)",
+  "Limpieza":"var(--cat-clean)",
+  "Abono cliente":"var(--series-abono)"
+};
+
+const peso = n => n.toLocaleString("es-MX", {style:"currency", currency:"MXN", minimumFractionDigits: (n%1===0?0:2), maximumFractionDigits:2});
+const pesoFull = n => n.toLocaleString("es-MX", {style:"currency", currency:"MXN", minimumFractionDigits:2, maximumFractionDigits:2});
+
+// ---- derive totals ----
+function sumType(w, t){ return w.movs.filter(m=>m[2]===t).reduce((s,m)=>s+m[3],0); }
+DATA.weeks.forEach(w=>{
+  w.gastos = sumType(w,"gasto");
+  w.abonos = sumType(w,"abono");
+  w.fee = +(w.gastos*DATA.feePct).toFixed(2);
+  w.costoTotal = +(w.gastos+w.fee).toFixed(2);
+});
+const activeWeeks = DATA.weeks.filter(w=>w.movs.length);
+const totals = {
+  gastos: +activeWeeks.reduce((s,w)=>s+w.gastos,0).toFixed(2),
+  abonos: +activeWeeks.reduce((s,w)=>s+w.abonos,0).toFixed(2),
+};
+totals.fee = +(totals.gastos*DATA.feePct).toFixed(2);
+totals.costoTotal = +(totals.gastos+totals.fee).toFixed(2);
+totals.restante = +(DATA.budget-totals.costoTotal).toFixed(2);
+totals.usadoPct = totals.costoTotal/DATA.budget*100;
+totals.saldoCliente = +(totals.costoTotal-totals.abonos).toFixed(2);
+
+const categorias = {};
+activeWeeks.forEach(w=>w.movs.forEach(m=>{
+  if(m[2]==="gasto"){ categorias[m[4]] = (categorias[m[4]]||0)+m[3]; }
+}));
+
+// ---- KPI cards ----
+const budgetStatus = totals.usadoPct<80 ? {c:"good",l:"dentro de presupuesto"} : totals.usadoPct<100 ? {c:"warning",l:"acercándose al límite"} : {c:"critical",l:"presupuesto excedido"};
+document.getElementById("kpiRow").innerHTML = `
+  <div class="kpi accent">
+    <div class="klabel">Presupuesto total</div>
+    <div class="kvalue num">${peso(DATA.budget)}</div>
+    <div class="kfoot">obra + fee de constructora</div>
+  </div>
+  <div class="kpi">
+    <div class="klabel">Gastado a la fecha</div>
+    <div class="kvalue num">${peso(totals.costoTotal)}</div>
+    <div class="kfoot"><span class="status-chip ${budgetStatus.c}"><span class="dot"></span>${totals.usadoPct.toFixed(1)}% usado</span></div>
+  </div>
+  <div class="kpi">
+    <div class="klabel">Restante</div>
+    <div class="kvalue num">${peso(totals.restante)}</div>
+    <div class="kfoot">${(100-totals.usadoPct).toFixed(1)}% del presupuesto</div>
+  </div>
+  <div class="kpi">
+    <div class="klabel">Abonos del cliente</div>
+    <div class="kvalue num">${peso(totals.abonos)}</div>
+    <div class="kfoot">2 pagos recibidos</div>
+  </div>
+  <div class="kpi">
+    <div class="klabel">Saldo pendiente de cobro</div>
+    <div class="kvalue num">${pesoFull(totals.saldoCliente)}</div>
+    <div class="kfoot">costo total − abonos</div>
+  </div>
+`;
+
+// ---- progress bar ----
+document.getElementById("progressFill").style.width = Math.min(totals.usadoPct,100).toFixed(2)+"%";
+document.getElementById("scaleMax").textContent = peso(DATA.budget);
+const chip = document.getElementById("budgetChip");
+chip.className = "status-chip "+budgetStatus.c;
+chip.innerHTML = `<span class="dot"></span>${budgetStatus.l}`;
+
+// ---- week bar chart ----
+const maxWeekVal = Math.max(...DATA.weeks.map(w=>Math.max(w.gastos,w.abonos)), 1);
+const shortMoney = v => v>=1000 ? Math.round(v/1000)+"k" : "$"+Math.round(v);
+document.getElementById("weekChart").innerHTML = DATA.weeks.map(w=>{
+  const gh = w.gastos/maxWeekVal*100;
+  const ah = w.abonos/maxWeekVal*100;
+  return `<div class="weekcol">
+    <div class="bars">
+      <div class="b" style="height:${gh}%; background:var(--cat-labor);">${w.gastos?`<span class="tip">${shortMoney(w.gastos)}</span>`:""}</div>
+      <div class="b" style="height:${ah}%; background:var(--series-abono);">${w.abonos?`<span class="tip">${shortMoney(w.abonos)}</span>`:""}</div>
+    </div>
+    <div class="wlabel">${w.label}</div>
+    <div class="wrange">${w.range}</div>
+  </div>`;
+}).join("");
+
+// ---- category bar chart ----
+const catEntries = Object.entries(categorias).sort((a,b)=>b[1]-a[1]);
+const maxCat = Math.max(...catEntries.map(e=>e[1]),1);
+document.getElementById("catChart").innerHTML = catEntries.map(([name,val])=>`
+  <div class="bar-row">
+    <div class="blabel">${name}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${(val/maxCat*100).toFixed(1)}%; background:${CAT_COLOR[name]||"var(--brand)"}"></div></div>
+    <div class="bar-val num">${peso(val)}</div>
+  </div>`).join("");
+
+// ---- week cards ----
+const statusChip = s => s==="cerrada" ? '<span class="status-chip good"><span class="dot"></span>cerrada</span>'
+  : s==="en curso" ? '<span class="status-chip warning"><span class="dot"></span>en curso</span>'
+  : '<span class="status-chip" style="color:var(--muted); background:var(--grid);"><span class="dot"></span>sin movimientos</span>';
+
+document.getElementById("weekCards").innerHTML = DATA.weeks.map(w=>`
+  <div class="weekcard ${w.movs.length?"":"empty"}">
+    <div class="whead">
+      <div><div class="wtitle">${w.label}</div><div class="wdate">${w.range}</div></div>
+      ${statusChip(w.status)}
+    </div>
+    <dl>
+      <dt>Gastos de obra</dt><dd class="num">${peso(w.gastos)}</dd>
+      <dt>Fee constructora (15%)</dt><dd class="num">${peso(w.fee)}</dd>
+      <dt>Costo total</dt><dd class="num">${peso(w.costoTotal)}</dd>
+      <dt>Abonos recibidos</dt><dd class="num" style="color:var(--aqua)">${peso(w.abonos)}</dd>
+    </dl>
+    ${w.movs.length ? `<div class="movlist">${w.movs.map(m=>`
+      <div class="mov"><span class="mc">${m[1]}</span><span class="mv ${m[2]}">${m[2]==='abono'?'+':''}${peso(m[3])}</span></div>
+    `).join("")}</div>` : `<div class="movlist"><span class="mc" style="color:var(--muted)">Aún sin movimientos registrados.</span></div>`}
+  </div>
+`).join("");
+
+// ---- detail table + filters ----
+const allMovs = [];
+DATA.weeks.forEach(w=> w.movs.forEach(m=> allMovs.push({fecha:m[0], concepto:m[1], tipo:m[2], monto:m[3], categoria:m[4], week:w.label})));
+allMovs.sort((a,b)=> a.fecha.localeCompare(b.fecha));
+
+const fWeek = document.getElementById("fWeek");
+[...new Set(allMovs.map(m=>m.week))].forEach(w=>{
+  const o=document.createElement("option"); o.value=w; o.textContent=w; fWeek.appendChild(o);
+});
+const fCat = document.getElementById("fCat");
+[...new Set(allMovs.map(m=>m.categoria))].sort().forEach(c=>{
+  const o=document.createElement("option"); o.value=c; o.textContent=c; fCat.appendChild(o);
+});
+
+function fmtDate(iso){
+  const [y,m,d] = iso.split("-");
+  const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return `${d} ${meses[+m-1]} ${y}`;
+}
+
+function renderTable(){
+  const q = document.getElementById("fSearch").value.trim().toLowerCase();
+  const wk = fWeek.value, tp = document.getElementById("fTipo").value, ct = fCat.value;
+  const rows = allMovs.filter(m=>
+    (!q || m.concepto.toLowerCase().includes(q)) &&
+    (!wk || m.week===wk) && (!tp || m.tipo===tp) && (!ct || m.categoria===ct)
+  );
+  document.getElementById("detailBody").innerHTML = rows.length ? rows.map(m=>`
+    <tr>
+      <td class="num">${fmtDate(m.fecha)}</td>
+      <td>${m.week}</td>
+      <td>${m.concepto}</td>
+      <td><span class="chip">${m.categoria}</span></td>
+      <td>${m.tipo==="abono"?"Abono":"Gasto"}</td>
+      <td class="amount num ${m.tipo}">${m.tipo==='abono'?'+':''}${peso(m.monto)}</td>
+    </tr>`).join("") : `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px;">Sin resultados para este filtro.</td></tr>`;
+}
+["fSearch","fWeek","fTipo","fCat"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", renderTable);
+  document.getElementById(id).addEventListener("change", renderTable);
+});
+renderTable();
+
+// ---- report category table ----
+document.getElementById("repCatBody").innerHTML = catEntries.map(([name,val])=>`
+  <tr><td><span class="leg-swatch" style="background:${CAT_COLOR[name]||"var(--brand)"}; display:inline-block; margin-right:8px;"></span>${name}</td>
+  <td class="num num">${peso(val)}</td>
+  <td class="num num">${(val/totals.gastos*100).toFixed(1)}%</td></tr>
+`).join("");
+
+// ---- tabs ----
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected", b===btn));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+  });
+});
+</script>
