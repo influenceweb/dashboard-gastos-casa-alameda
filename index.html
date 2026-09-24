@@ -262,7 +262,7 @@
   <div class="pill-row">
     <a class="pill" href="https://drive.google.com/drive/u/0/folders/16cHwsyogBsZ1FRyB52YY829bEOZYUEoV" target="_blank" rel="noopener">Comprobantes de gastos ↗</a>
     <a class="pill" href="https://docs.google.com/spreadsheets/d/1wTthdaOU0WKtC7KJmPnhN28DYgk8iA-q9ySDDYSitr4/edit?pli=1&gid=1061093183#gid=1061093183" target="_blank" rel="noopener">Reporte en excel ↗</a>
-    <span class="pill primary" id="syncPill">Actualizado 8 sep 2026</span>
+    <span class="pill primary" id="syncPill">Actualizado 24 sep 2026</span>
   </div>
 </header>
 
@@ -304,7 +304,7 @@
         </div>
         <div class="card">
           <h2>Gasto por categoría</h2>
-          <div class="cardsub">Acumulado a la fecha, $47,391 en 3 semanas</div>
+          <div class="cardsub" id="catChartSub">Acumulado a la fecha</div>
           <div class="barchart" id="catChart"></div>
         </div>
       </div>
@@ -340,7 +340,7 @@
     <div class="stack">
       <div class="card">
         <h2>Gasto por categoría</h2>
-        <div class="cardsub">% sobre el gasto de obra acumulado ($47,391)</div>
+        <div class="cardsub" id="repCatSub">% sobre el gasto de obra acumulado</div>
         <div class="table-wrap">
           <table class="rtable">
             <thead><tr><th>Categoría</th><th class="num">Monto</th><th class="num">% del gasto</th></tr></thead>
@@ -359,13 +359,13 @@
 
 </main>
 
-<footer class="foot">D8 Constructivo · Casa Alameda · Datos tomados de Google Sheets · Última sincronización: 8 sep 2026</footer>
+<footer class="foot">D8 Constructivo · Casa Alameda · Datos tomados de Google Sheets · Última sincronización: 24 sep 2026</footer>
 
 <script>
 const DATA = {
   budget: 282808,
   feePct: 0.15,
-  updated: "8 sep 2026",
+  updated: "24 sep 2026",
   weeks: [
     { n:1, label:"Semana 01", range:"21–30 ago", status:"cerrada",
       movs:[
@@ -390,11 +390,21 @@ const DATA = {
         ["2026-09-05","Mano de obra","gasto",12100,"Mano de obra"],
         ["2026-09-02","Abono 02","abono",24500,"Abono cliente"]
       ]},
-    { n:3, label:"Semana 03", range:"desde 7 sep", status:"en curso",
+    { n:3, label:"Semana 03", range:"7 sep", status:"cerrada",
       movs:[
         ["2026-09-07","Candados de seguridad para puertas","gasto",463,"Seguridad"]
       ]},
-    { n:4, label:"Semana 04", range:"por iniciar", status:"vacia", movs:[] }
+    { n:4, label:"Semana 04", range:"19 sep", status:"cerrada",
+      movs:[
+        ["2026-09-19","Mano de obra","gasto",1300,"Mano de obra"],
+        ["2026-09-19","Pintura 2 litros amarillo","gasto",328,"Pintura"]
+      ]},
+    { n:5, label:"Semana 05", range:"22–26 sep", status:"en curso",
+      movs:[
+        ["2026-09-22","1 cubeta de pintura","gasto",1340,"Pintura"],
+        ["2026-09-26","Mano de obra","gasto",3600,"Mano de obra"]
+      ]},
+    { n:6, label:"Semana 06", range:"por iniciar", status:"vacia", movs:[] }
   ]
 };
 
@@ -498,6 +508,8 @@ document.getElementById("catChart").innerHTML = catEntries.map(([name,val])=>`
     <div class="bar-track"><div class="bar-fill" style="width:${(val/maxCat*100).toFixed(1)}%; background:${CAT_COLOR[name]||"var(--brand)"}"></div></div>
     <div class="bar-val num">${peso(val)}</div>
   </div>`).join("");
+document.getElementById("catChartSub").textContent = `Acumulado a la fecha, ${peso(totals.gastos)} en ${activeWeeks.length} semanas`;
+document.getElementById("repCatSub").textContent = `% sobre el gasto de obra acumulado (${peso(totals.gastos)})`;
 
 // ---- week cards ----
 const statusChip = s => s==="cerrada" ? '<span class="status-chip good"><span class="dot"></span>cerrada</span>'
